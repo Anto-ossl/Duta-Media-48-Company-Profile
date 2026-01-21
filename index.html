@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duta Media Grafika 48</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* --- VARIABLE COLORS --- */
+        :root {
+            --primary-green: #006b3f;
+            --accent-green: #4caf50;
+            --bg-light: #f9fffb;
+            --text-dark: #333;
+            --white: #ffffff;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: var(--bg-light); color: var(--text-dark); line-height: 1.6; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; cursor: pointer; } /* Tambah cursor pointer */
+        ul { list-style: none; }
+
+        /* --- HEADER & NAV --- */
+        header {
+            background: var(--white);
+            padding: 15px 5%;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary-green);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap; 
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 70%; 
+        }
+
+        .nav-links { display: flex; gap: 25px; align-items: center; }
+        .nav-links a { font-weight: 600; color: #555; font-size: 14px; position: relative; }
+        .nav-links a:hover { color: var(--accent-green); }
+        
+        .btn-cta {
+            background-color: var(--primary-green);
+            color: var(--white);
+            padding: 8px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 14px;
+            display: inline-block;
+            cursor: pointer;
+        }
+        .btn-cta:hover { background-color: #004d2c; transform: translateY(-2px); }
+
+        /* --- HAMBURGER MENU (MOBILE) --- */
+        .hamburger {
+            display: none;
+            font-size: 24px;
+            color: var(--primary-green);
+            cursor: pointer;
+            z-index: 1001;
+            padding: 5px; /* Biar area klik lebih luas */
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 70%;
+            height: 100vh;
+            background: var(--white);
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            padding: 80px 30px;
+            gap: 25px;
+            transition: 0.4s ease;
+            z-index: 999;
+        }
+
+        .mobile-menu.active { right: 0; }
+
+        .mobile-menu a {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        
+        .mobile-menu .btn-cta { text-align: center; margin-top: 10px; }
+
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            z-index: 998;
+        }
+        .overlay.active { display: block; }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 85vh;
+            /* [EDIT GAMBAR] Ganti nama file di sini */
+            background: linear-gradient(rgba(0, 70, 40, 0.85), rgba(0, 50, 0, 0.7)), url('gambar-banner.jpg');
+            background-size: cover;
+            background-position: center;
+            background-color: #333; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: var(--white);
+            padding: 0 20px;
+            position: relative;
+        }
+        
+        .hero-content { opacity: 0; animation: fadeInUp 1s forwards; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .hero h1 { font-size: 3rem; margin-bottom: 15px; font-weight: 800; line-height: 1.2; }
+        .hero p { font-size: 1.1rem; max-width: 600px; margin-bottom: 30px; color: #e0e0e0; }
+
+        /* --- SECTIONS --- */
+        .section-padding { padding: 60px 5%; }
+        .section-title { color: var(--primary-green); font-size: 2rem; margin-bottom: 10px; font-weight: 800; text-align: center; }
+        .section-subtitle { margin-bottom: 40px; color: #666; text-align: center; }
+
+        /* Services Grid */
+        .services-section { background-color: #ecf5ef; }
+        .service-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .service-card {
+            background: var(--white); padding: 30px; border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s;
+            border-bottom: 4px solid var(--accent-green);
+        }
+        .service-card:hover { transform: translateY(-5px); cursor: default; } /* Card gak perlu bunyi klik kecuali ada linknya */
+        
+        .icon-box {
+            width: 50px; height: 50px; background: #e8f5e9; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 15px; color: var(--primary-green); font-size: 20px;
+        }
+
+        /* About Grid */
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+        
+        .about-img img { 
+            width: 100%; 
+            border-radius: 10px; 
+            min-height: 300px;
+            background-color: #ddd;
+            object-fit: cover;
+        }
+        
+        .about-text h2 { color: var(--primary-green); font-size: 1.8rem; margin-bottom: 15px; }
+
+        /* Footer */
+        footer { background: #1a1a1a; color: #fff; padding: 50px 5% 20px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+        .contact-info li { display: flex; gap: 10px; margin-bottom: 10px; color: #ccc; font-size: 0.9rem; }
+
+        /* --- RESPONSIVE MOBILE --- */
+        @media (max-width: 768px) {
+            .logo { font-size: 1.1rem; }
+            .nav-links, .desktop-cta { display: none; }
+            .hamburger { display: block; }
+            .hero { height: 70vh; }
+            .hero h1 { font-size: 2rem; }
+            .hero p { font-size: 0.95rem; padding: 0 10px; }
+            .section-padding { padding: 50px 20px; }
+            .about-grid { grid-template-columns: 1fr; }
+            .about-img { order: -1; margin-bottom: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay" id="overlay"></div>
+
+    <header>
+        <div class="logo">Duta Media Grafika 48</div>
+        
+        <nav class="nav-links">
+            <a href="#about" class="sound-click">Tentang Kami</a>
+            <a href="#services" class="sound-click">Layanan</a>
+            <a href="#contact" class="sound-click">Hubungi Kami</a>
+            <a href="#contact" class="btn-cta desktop-cta sound-click">Konsultasi Gratis</a>
+        </nav>
+
+        <div class="hamburger sound-click" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#about" class="sound-click" onclick="toggleMenu()">Tentang Kami</a>
+        <a href="#services" class="sound-click" onclick="toggleMenu()">Layanan</a>
+        <a href="#why-us" class="sound-click" onclick="toggleMenu()">Keunggulan</a>
+        <a href="#contact" class="sound-click" onclick="toggleMenu()">Hubungi Kami</a>
+        <a href="#contact" class="btn-cta sound-click" onclick="toggleMenu()">Konsultasi Gratis</a>
+    </div>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>MITRA CETAK<br>TERPERCAYA</h1>
+            <p>Solusi Percetakan Offset Berkualitas Tinggi di Jantung Kota Bandung.</p>
+            <div style="margin-top: 25px;">
+                <a href="#services" class="btn-cta sound-click" style="background: white; color: var(--primary-green);">Lihat Layanan</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="section-padding">
+        <div class="about-grid">
+            <div class="about-text">
+                <h2>Tentang Kami</h2>
+                <p>Berlokasi di Jl. Pagarsih No. 48, <strong>Duta Media Grafika</strong> hadir sebagai solusi cetak profesional.</p>
+                <p style="margin-top: 10px; color: #666;">Kami menggabungkan teknologi mesin offset terkini dengan SDM berpengalaman untuk hasil presisi.</p>
+            </div>
+            <div class="about-img">
+                <img src="gambar-mesin.jpg" alt="Foto Mesin">
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="section-padding services-section">
+        <h2 class="section-title">Layanan Kami</h2>
+        <p class="section-subtitle">Spesialis Offset Printing Skala Menengah - Besar</p>
+        
+        <div class="service-grid">
+            <div class="service-card">
+                <div class="icon-box"><i class="fas fa-bullhorn"></i></div>
+                <h3>Promosi</h3>
+                <p style="font-size: 14px; color: #666;">Brosur, Flyer, Poster, Kalender.</p>
+            </div>
+            <div class="service-card">
+                <div class="icon-box"><i class="fas fa-box"></i></div>
+                <h3>Packaging</h3>
+                <p style="font-size: 14px; color: #666;">Dus Makanan, Box Produk, Label.</p>
+            </div>
+            <div class="service-card">
+                <div class="icon-box"><i class="fas fa-book-open"></i></div>
+                <h3>Penerbitan</h3>
+                <p style="font-size: 14px; color: #666;">Buku, Majalah, Laporan Tahunan.</p>
+            </div>
+            <div class="service-card">
+                <div class="icon-box"><i class="fas fa-file-invoice"></i></div>
+                <h3>Kantor</h3>
+                <p style="font-size: 14px; color: #666;">Kop Surat, Nota NCR, Amplop.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="footer-grid">
+            <div>
+                <h3 style="color: var(--accent-green); margin-bottom: 15px;">Hubungi Kami</h3>
+                <ul class="contact-info">
+                    <li><i class="fas fa-map-marker-alt"></i> Jl. Pagarsih No. 48, Bandung</li>
+                    <li><i class="fas fa-phone"></i> (022) 6007763</li>
+                    <li><i class="fas fa-clock"></i> Senin - Sabtu (09.00 - 17.45)</li>
+                </ul>
+            </div>
+            <div>
+                <h3 style="color: var(--accent-green); margin-bottom: 15px;">Lokasi</h3>
+                <div style="background: #333; height: 100px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                    <span style="font-size: 12px; color: #888;">Area Google Maps</span>
+                </div>
+            </div>
+        </div>
+        <p style="text-align: center; border-top: 1px solid #333; margin-top: 30px; padding-top: 20px; font-size: 12px; color: #777;">&copy; 2026 Duta Media Grafika 48</p>
+    </footer>
+
+    <script>
+        // 1. Logic Menu Mobile
+        function toggleMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const overlay = document.getElementById('overlay');
+            menu.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+        document.getElementById('overlay').addEventListener('click', toggleMenu);
+
+        // 2. Logic Sound Effect (Bagian Baru)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Kita bikin objek Audio, arahin ke file 'click.mp3'
+            // Pastikan file 'click.mp3' ada di folder yang sama ya!
+            const clickSound = new Audio('click.mp3'); 
+            
+            // Pilih semua elemen yang punya class 'sound-click'
+            const buttons = document.querySelectorAll('.sound-click');
+
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Reset suara ke detik 0 (biar kalau diklik cepet2 tetep bunyi)
+                    clickSound.currentTime = 0;
+                    // Play suaranya
+                    clickSound.play().catch(error => {
+                        console.log("Browser memblokir autoplay audio (normal terjadi jika user belum interaksi).");
+                    });
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
